@@ -21,31 +21,31 @@ class MsTeams(AppBase):
         super().__init__(redis, logger, console_logger)
 
     # Write your data inside this function
-    def send_simple_text(self, webhook_url, message):
+    def send_simple_text(self, webhook_url, message, http_proxy=None, https_proxy=None):
         try:
-            myTeamsMessage = teams.connectorcard(str(webhook_url))    # You must create the connectorcard object with the Microsoft Webhook URL
+            myTeamsMessage = teams.connectorcard(str(webhook_url), http_proxy, https_proxy)    # You must create the connectorcard object with the Microsoft Webhook URL
             myTeamsMessage.text(message)     # Add text to the message.
             myTeamsMessage.send()# send the message.
         except Exception as e:
             return f'{e.__class__} occured'
-        
+
         return f'Message Sent'
 
-    def send_rich_text(self, webhook_url, title, message, link_button_text, link_button_url):
+    def send_rich_text(self, webhook_url, title, message, link_button_text, link_button_url, http_proxy=None, https_proxy=None):
         try:
-            myTeamsMessage = teams.connectorcard(webhook_url)    # You must create the connectorcard object with the Microsoft Webhook URL
+            myTeamsMessage = teams.connectorcard(webhook_url, http_proxy, https_proxy)    # You must create the connectorcard object with the Microsoft Webhook URL
             myTeamsMessage.title(title) # title for your card
             myTeamsMessage.text(message)     # Add text to the message.
             myTeamsMessage.addLinkButton(str(link_button_text), str(link_button_url)) # for button
             myTeamsMessage.send()# send the message.
         except Exception as e:
             return f'{e.__class__} occured'
-        
-        return f'Message Sent'        
 
-    def send_actionable_msg(self, webhook_url, title, message, added_information, choices, callback_url):
+        return f'Message Sent'
+
+    def send_actionable_msg(self, webhook_url, title, message, added_information, choices, callback_url, http_proxy=None, https_proxy=None):
         try:
-            myTeamsMessage = teams.connectorcard(webhook_url)    # You must create the connectorcard object with the Microsoft Webhook URL
+            myTeamsMessage = teams.connectorcard(webhook_url, http_proxy, https_proxy)    # You must create the connectorcard object with the Microsoft Webhook URL
             myTeamsMessage.title(title) # title for your card
             myTeamsMessage.text(message)     # Add text to the message.
             myTeamsPotentialAction3 = teams.potentialaction(_name = "Select_Action")
@@ -97,12 +97,12 @@ class MsTeams(AppBase):
             myTeamsMessage.send()# send the message.
         except Exception as e:
             return f'{e} occured'
-        
-        return f'Message Sent'        
 
-    def get_user_input(self, webhook_url, title, message, callback_url):
+        return f'Message Sent'
+
+    def get_user_input(self, webhook_url, title, message, callback_url, http_proxy=None, https_proxy=None):
         try:
-            myTeamsMessage = teams.connectorcard(webhook_url)  # You must create the connectorcard object with the Microsoft Webhook URL
+            myTeamsMessage = teams.connectorcard(webhook_url, http_proxy, https_proxy)  # You must create the connectorcard object with the Microsoft Webhook URL
             myTeamsMessage.title(title) # Title for your card
             myTeamsMessage.text(message) # Add text to the message.
             myTeamsPotentialAction1 = teams.potentialaction(_name = "Comment")
