@@ -52,13 +52,13 @@ class TheHive(AppBase):
         self.__connect_thehive(url, apikey, organisation)
 
         response = self.thehive.find_cases(
-            query=ContainsString("title", title_query), range="all", sort=[]
+            query=ContainsString("title", title_query), range="0-1999", sort=[]
         )
 
         return response.text
 
     def custom_search(
-        self, apikey, url, organisation, search_for, custom_query, range="all"
+        self, apikey, url, organisation, search_for, custom_query, range="0-1998"
     ):
         self.__connect_thehive(url, apikey, organisation)
 
@@ -71,10 +71,10 @@ class TheHive(AppBase):
 
         if search_for == "alert":
             response = self.thehive.find_alerts(
-                query=custom_query, range="all", sort=[]
+                query=custom_query, range="0-1997", sort=["-createdAt"]
             )
         else:
-            response = self.thehive.find_cases(query=custom_query, range="all", sort=[])
+            response = self.thehive.find_cases(query=custom_query, range="0-1996", sort=[])
 
         if (
             response.status_code == 200
@@ -621,7 +621,7 @@ class TheHive(AppBase):
 
         # Call the API
         response = self.thehive.get_case_observables(
-            case_id, query=query, sort=["-startDate", "+ioc"], range="all"
+            case_id, query=query, sort=["-startDate", "+ioc"], range="0-95"
         )
 
         # Display the result
@@ -811,7 +811,7 @@ class TheHive(AppBase):
         # get the current data for the alert
         alert = self.thehive.get_alert(id).json()
 
-        # Update information if given by the user, otherwise, 
+        # Update information if given by the user, otherwise,
         # use the already present data retrieved above
         alert_type = alerttype if alerttype else alert["type"]
         alert_source = source if source else alert["source"]
@@ -821,7 +821,7 @@ class TheHive(AppBase):
 
         # tlp handling
         alert_tlp = int(tlp) if tlp else alert["tlp"]
-            
+
         if alert_tlp > 3 or alert_tlp < 0:
             return "TLP needs to be a number from 0-3, not %d" % alert_tlp
 
