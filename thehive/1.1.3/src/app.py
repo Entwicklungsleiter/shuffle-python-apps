@@ -52,13 +52,13 @@ class TheHive(AppBase):
         self.__connect_thehive(url, apikey, organisation)
 
         response = self.thehive.find_cases(
-            query=ContainsString("title", title_query), range="0-1999", sort=[]
+            query=ContainsString("title", title_query), range="0-2999", sort=[]
         )
 
         return response.text
 
     def custom_search(
-        self, apikey, url, organisation, search_for, custom_query, range="0-1998"
+        self, apikey, url, organisation, search_for, custom_query, range="0-2998"
     ):
         self.__connect_thehive(url, apikey, organisation)
 
@@ -71,7 +71,7 @@ class TheHive(AppBase):
 
         if search_for == "alert":
             response = self.thehive.find_alerts(
-                query=custom_query, range="0-1997", sort=["-createdAt"]
+                query=custom_query, range="0-2997", sort=[]
             )
         else:
             response = self.thehive.find_cases(query=custom_query, range="0-1996", sort=[])
